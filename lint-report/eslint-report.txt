@@ -1,0 +1,20 @@
+ESLint Report
+
+File: c:\Users\mohmm\Desktop\ProjetFileRouge\petswave_admin\src\app\page.js
+  [1, 19] Strings must use singlequote. (quotes)
+  [5, 1] This line has a length of 166. Maximum allowed is 150. (max-len)
+  [17, 36] Strings must use singlequote. (quotes)
+  [28, 1] This line has a length of 249. Maximum allowed is 150. (max-len)
+  [43, 1] This line has a length of 278. Maximum allowed is 150. (max-len)
+
+File: c:\Users\mohmm\Desktop\ProjetFileRouge\petswave_admin\src\app\layout.js
+  [1, 17] Identifier 'Geist_Mono' is not in camel case. (camelcase)
+  [1, 35] Strings must use singlequote. (quotes)
+  [2, 8] Strings must use singlequote. (quotes)
+  [5, 13] Strings must use singlequote. (quotes)
+  [6, 13] Strings must use singlequote. (quotes)
+  [10, 13] Strings must use singlequote. (quotes)
+  [11, 13] Strings must use singlequote. (quotes)
+  [15, 10] Strings must use singlequote. (quotes)
+  [16, 16] Strings must use singlequote. (quotes)
+

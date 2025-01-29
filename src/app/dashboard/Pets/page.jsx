@@ -16,7 +16,7 @@ export default function PetsManage() {
       setPets(fetchedPets);
     };
     fetchPets();
-  }, []);
+  }, [pets]);
 
   const handleDelete = (petId) => {
     console.log('Delete pet', petId);

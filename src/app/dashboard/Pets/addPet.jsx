@@ -100,6 +100,7 @@ const AddPetPopup = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     getCategory()
+    
   }, [])
 
 

@@ -14,4 +14,4 @@ const InputField = ({ id, type, label, value, onChange, placeholder }) => (
         placeholder={placeholder}
       />
     </div>
-  );
+  );        

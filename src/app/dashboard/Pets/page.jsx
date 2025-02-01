@@ -1,7 +1,7 @@
 "use client"
 import React, { useState, useEffect } from 'react';
 import { getAllPets } from '../server/GetAllPets';
-import { Trash2, Edit, ArrowBigLeft, ArrowBigRight } from 'lucide-react';
+import { Trash2, Edit, ArrowBigLeft, ArrowBigRight,  CheckCircle, XCircle } from 'lucide-react';
 import AddPetPopup from './addPet';
 
 export default function PetsManage() {
@@ -55,6 +55,7 @@ export default function PetsManage() {
                 <th className="px-6 py-3 text-xs font-medium uppercase tracking-wider text-left">Age</th>
                 <th className="px-6 py-3 text-xs font-medium uppercase tracking-wider text-left">Category</th>
                 <th className="px-6 py-3 text-xs font-medium uppercase tracking-wider text-left">Price</th>
+                <th className="px-6 py-3 text-xs font-medium uppercase tracking-wider text-left">IsAvaliable</th>
                 <th className="px-6 py-3 text-xs font-medium uppercase tracking-wider text-left">Actions</th>
               </tr>
             </thead>
@@ -66,16 +67,27 @@ export default function PetsManage() {
                   <td className="px-6 py-4 text-sm text-gray-700">{pet.age} Weeks</td>
                   <td className="px-6 py-4 text-sm text-gray-700">{pet.category?.name}</td>
                   <td className="px-6 py-4 text-sm text-gray-700">${pet.Prix}</td>
+                  <td className="px-6 py-4 text-sm text-gray-700 flex items-center gap-2">
+                    {pet.isAvailable ? (
+                      <>
+                        <CheckCircle className="text-green-500 w-5 h-5 ml-8 mt-2" size={16} />
+                      </>
+                    ) : (
+                      <>
+                        <XCircle className="text-red-500 w-5 h-5 ml-8 mt-2" size={16} />
+                      </>
+                    )}
+                  </td>
                   <td className="px-6 py-4 text-sm text-gray-700">
                     <div className="flex space-x-3">
                       <button
-                        onClick={() => handleUpdate(pet.id)}
+                        onClick={() => handleUpdate(pet._id)}
                         className="text-blue-600 hover:text-blue-800 transition duration-150 ease-in-out p-2 rounded-md hover:bg-blue-200"
                       >
                         <Edit className="w-5 h-5" />
                       </button>
                       <button
-                        onClick={() => handleDelete(pet.id)}
+                        onClick={() => handleDelete(pet._id)}
                         className="text-red-600 hover:text-red-800 transition duration-150 ease-in-out p-2 rounded-md hover:bg-red-200"
                       >
                         <Trash2 className="w-5 h-5" />

@@ -1,7 +1,7 @@
 "use client"
 import React, { useState, useEffect } from 'react';
 import { getAllPets } from '../server/GetAllPets';
-import { Trash2, Edit, ArrowBigLeft, ArrowBigRight,  CheckCircle, XCircle } from 'lucide-react';
+import { Trash2, Edit, ArrowBigLeft, ArrowBigRight, CheckCircle, XCircle } from 'lucide-react';
 import AddPetPopup from './addPet';
 
 export default function PetsManage() {

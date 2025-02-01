@@ -12,7 +12,7 @@ export default function SideBar() {
   const menuItems = [
     { name: "Dashboard", href: "/dashboard", icon: Home },
     { name: "Manage Users", href: "/dashboard/users", icon: Users },
-    { name: "Manage Pets", href: "/dashboard/pets", icon: Cat },
+    { name: "Manage Pets", href: "/dashboard/Pets", icon: Cat },
     { name: "Manage Category", href: "/dashboard/categories", icon: Package },
   ];
 

@@ -27,12 +27,10 @@ const AddPetPopup = ({ isOpen, onClose }) => {
   const handleBack = () => {
     if (currentStep > 1) setCurrentStep(currentStep - 1);
   };
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setPetData({ ...petData, [name]: value });
   };
-
   const handleImageChange = (e) => {
     const files = e.target.files;
     if (files) {

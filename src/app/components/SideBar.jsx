@@ -13,7 +13,7 @@ export default function SideBar() {
     { name: "Dashboard", href: "/dashboard", icon: Home },
     { name: "Manage Users", href: "/dashboard/users", icon: Users },
     { name: "Manage Pets", href: "/dashboard/Pets", icon: Cat },
-    { name: "Manage Category", href: "/dashboard/categories", icon: Package },
+    { name: "Manage Category", href: "/dashboard/category", icon: Package },
   ];
 
   return (

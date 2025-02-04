@@ -1,55 +1,36 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
-import path from "@/app/axios/path";
 import Cookies from "js-cookie";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "@/app/redux/slice/authSlice";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("mohmmedlaeh81@gmail.com");
   const [password, setPassword] = useState("password123");
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
   const router = useRouter();
+  const { loading, error, user } = useSelector((state) => state.auth);
+
+
+  useEffect(() => {
+    if (user) {
+      router.push("/dashboard");
+    }
+  }, [user, router]);
 
   const handleSubmit = async (e) => {
-    console.log('====================================');
-    console.log('====================================');
     e.preventDefault();
-    setLoading(true);
-    setError(null);
-    console.log('====================================');
-    console.log(email);
-    console.log('====================================');
-    
-    if (!email || !password) {
-    
-      setError("Email et mot de passe sont requis.");
-      setLoading(false);
-      return;
-    }
+    const res = await dispatch(loginUser({ email, password }));
+    const token = res.payload
+    Cookies.set('token', token, { expires: 7});
 
-    try {
-      const res = await path.post("auth/login", { email, password });
-      console.log(res.data);
+    router.push("/dashboard");
 
-      const { token } = res.data;
-      Cookies.set("token", token);
-      router.push("/");
-    } catch (err) {
-      console.error("Login error:", err);
-
-      const errorMessage =
-        err?.response?.data?.message ||
-        (err.message.includes("Network Error") ? "Impossible de se connecter au serveur." : "Une erreur est survenue. Veuillez réessayer.");
-
-      setError(errorMessage);
-    } finally {
-      setLoading(false);
-    }
   };
 
   return (
@@ -119,7 +100,6 @@ export default function LoginPage() {
               Mot de passe oublié ?
             </Link>
           </div>
-         
         </div>
       </div>
     </div>

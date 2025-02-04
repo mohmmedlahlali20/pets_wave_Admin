@@ -1,17 +1,17 @@
 "use client"
 import { useEffect, useState } from "react"
-import { getAllcategory } from "../server/getAllCategory"
 import { Edit, Trash2, Plus } from "lucide-react"
 import CreateNewCategory from "./CreateNewCategory"
+import { useDispatch, useSelector } from "react-redux"
+import { getAllcategories } from "@/app/redux/slice/categorySlice"
 
 export default function Page() {
-  const [category, setCategory] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage] = useState(5)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-
- 
+  const {loading, error, categories} = useSelector((state) => state.category)
+ const dispatch = useDispatch()
 
 
 
@@ -21,16 +21,8 @@ export default function Page() {
 
 
   useEffect(() => {
-    const getCategory = async () => {
-      try {
-        const category = await getAllcategory()
-        setCategory(category)
-      } catch (err) {
-        console.error("Error fetching categories:", err)
-      }
-    }
-    getCategory()
-  }, [category])
+    dispatch(getAllcategories());
+  }, [dispatch]);
 
   const handleDelete = (id) => {
     console.log("Delete category", id)
@@ -42,11 +34,11 @@ export default function Page() {
 
   const indexOfLastCategory = currentPage * itemsPerPage
   const indexOfFirstCategory = indexOfLastCategory - itemsPerPage
-  const currentCategory = category.slice(indexOfFirstCategory, indexOfLastCategory)
+  const currentCategory = categories.slice(indexOfFirstCategory, indexOfLastCategory)
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber)
 
-  const totalPages = Math.ceil(category.length / itemsPerPage)
+  const totalPages = Math.ceil(categories.length / itemsPerPage)
 
   return (
     <div className="container mx-auto px-4 sm:px-8 py-8">

@@ -1,6 +1,5 @@
 import "./globals.css";
-
-
+import Providers from "./providers";
 
 export const metadata = {
   title: "Create Next App",
@@ -10,10 +9,8 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className='antialiased'
-      >
-        {children}
+      <body className="antialiased">
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

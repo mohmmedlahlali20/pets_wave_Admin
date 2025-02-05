@@ -3,20 +3,19 @@ import React, { useState, useEffect } from 'react';
 import { getAllPets } from '../server/GetAllPets';
 import { Trash2, Edit, ArrowBigLeft, ArrowBigRight, CheckCircle, XCircle } from 'lucide-react';
 import AddPetPopup from './addPet';
+import { useDispatch, useSelector } from 'react-redux';
+import { getPets } from '@/app/redux/slice/petSlice';
 
 export default function PetsManage() {
-  const [pets, setPets] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
+  const {loading, error, pets} = useSelector((state) => state.pets);
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    const fetchPets = async () => {
-      const fetchedPets = await getAllPets();
-      setPets(fetchedPets);
-    };
-    fetchPets();
-  }, [pets]);
+    dispatch(getPets())
+  }, [dispatch]);
 
   const handleDelete = (petId) => {
     console.log('Delete pet', petId);

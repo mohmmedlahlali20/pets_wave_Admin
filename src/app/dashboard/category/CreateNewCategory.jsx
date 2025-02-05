@@ -1,29 +1,32 @@
-"use client"
+"use client";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { X } from "lucide-react";
 import Swal from "sweetalert2";
-import path from "@/app/axios/path";
+import { addCategory } from "@/app/redux/slice/categorySlice";
 
 export default function CreateNewCategory({ isOpen, onClose }) {
     const [name, setName] = useState("");
+    const dispatch = useDispatch();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData();
-        formData.append('name', name);
+        formData.append("name", name);
 
         try {
-            const res = await path.post("category/create_Category", formData);
-            console.log("Response data:", res.data);
-            if (res.status === 201) {
-                Swal.fire({
-                    position: "top-end",
-                    icon: "success",
-                    title: "Category has been added successfully",
-                    showConfirmButton: false,
-                    timer: 1500,
-                });
-            }
+            await dispatch(addCategory(formData)).unwrap();
+
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Category has been added successfully",
+                showConfirmButton: false,
+                timer: 1500,
+            });
+
+            setName(""); 
+            onClose();
         } catch (err) {
             console.error("Error:", err);
             Swal.fire({
@@ -34,8 +37,6 @@ export default function CreateNewCategory({ isOpen, onClose }) {
                 timer: 1500,
             });
         }
-
-        onClose();
     };
 
     if (!isOpen) return null;
@@ -57,7 +58,7 @@ export default function CreateNewCategory({ isOpen, onClose }) {
                         <input
                             type="text"
                             id="categoryName"
-                            // value={}
+                            value={name}
                             onChange={(e) => setName(e.target.value)}
                             className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             placeholder="Enter category name"

@@ -1,25 +1,17 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import { GetAllUsers } from '../server/getAllUsers';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUsers } from '@/app/redux/slice/authSlice';
 
 export default function manageUsers() {
-    const [users, setUsers] = useState([]);
     const [currentPage, setCurrentPage] = useState(1); 
     const [itemsPerPage] = useState(5);
-    
-    const fetchUsers = async () => {
-        try {
-            const users = await GetAllUsers()
-            setUsers(users)
-            console.log(users)
-        } catch (err) {
-            console.error('cannot fetch', err);
-        }
-    };
-
+    const {loading, error, users}  = useSelector((state) => state.auth)
+    const dispatch = useDispatch()
     useEffect(() => {
-        fetchUsers()
-    }, []);
+        dispatch(getUsers())
+    }, [dispatch]);
 
     const indexOfLastUser = currentPage * itemsPerPage;
     const indexOfFirstUser = indexOfLastUser - itemsPerPage;

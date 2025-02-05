@@ -12,14 +12,7 @@ export default function Page() {
 
   const {loading, error, categories} = useSelector((state) => state.category)
  const dispatch = useDispatch()
-
-
-
-
-
-
-
-
+ 
   useEffect(() => {
     dispatch(getAllcategories());
   }, [dispatch]);

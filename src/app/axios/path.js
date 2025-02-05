@@ -14,7 +14,19 @@ path.interceptors.request.use(
     }
 
     if (config.data instanceof FormData) {
-      config.headers["Content-Type"] = "multipart/form-data";
+      let hasFile = false;
+      for (const value of config.data.values()) {
+        if (value instanceof File || (value instanceof Blob && value.type)) {
+          hasFile = true;
+          break;
+        }
+      }
+
+      if (hasFile) {
+        config.headers["Content-Type"] = "multipart/form-data";
+      } else {
+        config.headers["Content-Type"] = "application/json";
+      }
     } else {
       config.headers["Content-Type"] = "application/json";
     }

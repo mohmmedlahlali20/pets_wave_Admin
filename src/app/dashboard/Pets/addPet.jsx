@@ -1,14 +1,17 @@
 'use client'
 
-import path from '@/app/axios/path';
 import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
-import { getAllcategory } from '../server/getAllCategory';
+import { useDispatch, useSelector } from 'react-redux';
 import { ArrowBigLeft, ArrowBigRight, X } from 'lucide-react';
+import { getAllcategories } from '@/app/redux/slice/categorySlice';
+import { addPet } from '@/app/redux/slice/petSlice';
 
 const AddPetPopup = ({ isOpen, onClose }) => {
+  const dispatch = useDispatch();
+  const { loading, error, categories } = useSelector((state) => state.category)
+
   const [currentStep, setCurrentStep] = useState(1);
-  const [category, setCategory] = useState([])
   const [petData, setPetData] = useState({
     name: "",
     gender: "",
@@ -19,6 +22,9 @@ const AddPetPopup = ({ isOpen, onClose }) => {
     Prix: "",
   });
 
+  useEffect(() => {
+    dispatch(getAllcategories());
+  }, [dispatch]);
 
   const handleNext = () => {
     if (currentStep < 3) setCurrentStep(currentStep + 1);
@@ -27,10 +33,11 @@ const AddPetPopup = ({ isOpen, onClose }) => {
   const handleBack = () => {
     if (currentStep > 1) setCurrentStep(currentStep - 1);
   };
+
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setPetData({ ...petData, [name]: value });
+    setPetData({ ...petData, [e.target.name]: e.target.value });
   };
+
   const handleImageChange = (e) => {
     const files = e.target.files;
     if (files) {
@@ -42,33 +49,19 @@ const AddPetPopup = ({ isOpen, onClose }) => {
   };
 
   const handleSubmit = async () => {
-    const formData = new FormData();
-    formData.append('name', petData.name);
-    formData.append('gender', petData.gender);
-    formData.append('age', petData.age);
-    formData.append('category', petData.category);
-    formData.append("Prix", petData.Prix);
-    formData.append('description', petData.description);
-    petData.images.forEach((image, index) => {
-      formData.append('images', image);
-    });
-
-
     try {
-      const res = await path.post('pets/create', formData);
-      console.log('Response:', res.data);
-      if (res.status === 201) {
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "Your pet has been added successfully",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        onClose();
-      }
-    } catch (err) {
-      console.error('Error while adding pet:', err);
+      await dispatch(addPet(petData)).unwrap();
+
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Your pet has been added successfully",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
+      onClose();
+    } catch (error) {
       Swal.fire({
         position: "top-end",
         icon: "error",
@@ -78,28 +71,6 @@ const AddPetPopup = ({ isOpen, onClose }) => {
       });
     }
   };
-
-
-  // const closePopUp= () => {
-  //   onClose();
-  // }
-
-
-  const getCategory = async () => {
-    try {
-      const categoryData = await getAllcategory()
-      setCategory(categoryData || [])
-    } catch (err) {
-      console.error(err);
-    }
-
-  }
-
-
-  useEffect(() => {
-    getCategory()
-    
-  }, [])
 
 
   return (
@@ -170,7 +141,7 @@ const AddPetPopup = ({ isOpen, onClose }) => {
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300 mb-4"
               >
                 <option value="">Select a category</option>
-                {category.map((item) => (
+                {categories.map((item) => (
                   <option key={item._id} value={item._id}>
                     {item.name}
                   </option>
